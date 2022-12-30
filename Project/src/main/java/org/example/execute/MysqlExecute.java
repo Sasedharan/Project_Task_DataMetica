@@ -18,7 +18,7 @@ public class MysqlExecute {
         Scanner scanner = new Scanner(System.in);
         PreparedStatement pstmt = null;
 
-        ResultSet rs = mysqlConnection.prepareStatement("select * from EMPLOYEE2 where  empid=1 ")
+        ResultSet rs = mysqlConnection.prepareStatement("select * from student where dept='IT' ")
                 .executeQuery();
         return rs;
     }

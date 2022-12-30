@@ -18,7 +18,7 @@ public class PostgreSqlExecute {
         PreparedStatement pstmt = null;
         Statement stmt = null;
 
-        ResultSet rs = postgresConnection.prepareStatement("select * from EMPLOYEE1 where empid=1 ")
+        ResultSet rs = postgresConnection.prepareStatement("select * from student where dept='IT' ")
                 .executeQuery();
         return rs;
     }

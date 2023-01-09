@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.Objects;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -23,11 +22,11 @@ public class Main {
 
         System.out.println("\n___Comparing Mysql and PostgreSql Resultset___");
         System.out.println("------------------------------------------------");
-        CompareResultset(resultset1, resultset2);
+        System.out.println(CompareResultset(resultset1, resultset2));
     }
 
-    public static void CompareResultset(ResultSet resultSet1, ResultSet resultSet2) throws SQLException {
-        String comparedResult;
+    public static String CompareResultset(ResultSet resultSet1, ResultSet resultSet2) throws SQLException {
+        String comparedResult = "Data Match";
         try {
             ResultSetMetaData rsmd1 = resultSet1.getMetaData();
             ResultSetMetaData rsmd2 = resultSet2.getMetaData();
@@ -44,17 +43,19 @@ public class Main {
                             if (!colValue1.equals(colValue2)) {
                                 comparedResult = "Data MisMatch Found in Column - " + columCount + " of value " + "'" +
                                         colValue1 + "'" + " with " + "'" + colValue2 + "'";
-                                System.out.println(comparedResult);
+                                return comparedResult;
+                               // System.out.println(comparedResult);
                             }
                         } else if (columnType == Types.CHAR || columnType == Types.LONGVARCHAR ||
                                 columnType == Types.VARCHAR) {
                             String colValue1 = resultSet1.getString(columCount);
                             String colValue2 = resultSet2.getString(columCount);
-                            if (!Objects.equals(colValue1, colValue2)) {
+                            if (!colValue1.equals(colValue2)) {
                                 comparedResult = "Data MisMatch Found in Column - " + columCount + " of value " +
                                         "'" + colValue1 +
                                         "'" + " with " + "'" + colValue2 + "'";
-                                System.out.println(comparedResult);
+                                return comparedResult;
+                              // System.out.println(comparedResult);
                             }
                         } else if (columnType == Types.DECIMAL || columnType == Types.FLOAT || columnType == Types.DOUBLE
                                 || columnType == Types.REAL) {
@@ -64,7 +65,8 @@ public class Main {
                                 comparedResult = "Data MisMatch Found in Column - " + columCount + " of value " + "'"
                                         + colValue1 +
                                         "'" + " with " + "'" + colValue2 + "'";
-                                System.out.println(comparedResult);
+                                return comparedResult;
+                               //System.out.println(comparedResult);
                             }
                         } else if (columnType == Types.DATE || columnType == Types.TIME || columnType == Types.TIMESTAMP) {
                             Timestamp colValue1 = resultSet1.getTimestamp(columCount);
@@ -72,20 +74,22 @@ public class Main {
                             if (colValue1 != colValue2) {
                                 comparedResult = "Data MisMatch Found in Column - " + columCount + " of value " + "'" +
                                         colValue1 + "'" + " with " + "'" + colValue2 + "'";
-                                System.out.println(comparedResult);
+                                return comparedResult;
+                               // System.out.println(comparedResult);
                             }
                         }
                     }
                 }
-                System.out.println("Data Matches in both Table");
             } else {
                 comparedResult = "Column Mismatch Found : " + "\n\tNo of Column in First Table : " +
                         rsColumn1 + "\n\tNo of Column in Second Table : " + rsColumn2;
-                System.out.println(comparedResult);
+                return comparedResult;
+              //  System.out.println(comparedResult);
             }
         } catch (SQLException e) {
             e.getMessage();
         }
+        return comparedResult;
     }
 }
 
